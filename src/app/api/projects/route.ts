@@ -73,9 +73,19 @@ export async function GET(request: NextRequest) {
     }
 
     const skip = (page - 1) * limit;
+    
+    let queryObj = Project.find(filter);
+    if (q) {
+      // Project relevance score and sort by it
+      queryObj = queryObj
+        .select({ score: { $meta: 'textScore' } })
+        .sort({ score: { $meta: 'textScore' }, createdAt: -1 });
+    } else {
+      queryObj = queryObj.sort({ createdAt: -1 });
+    }
+
     const [projects, total] = await Promise.all([
-      Project.find(filter)
-        .sort({ createdAt: -1 })
+      queryObj
         .skip(skip)
         .limit(limit)
         .populate('createdBy', 'name email')

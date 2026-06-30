@@ -11,15 +11,15 @@ const sampleProjects = [
   {
     title: 'Autonomous Plant Watering System with IoT Integration',
     groupName: 'IoT Pioneers',
-    batchName: 'CS-2024',
+    batchName: 'AI-2027',
     abstract: 'An automated watering system that utilizes soil moisture sensors, weather API integrations, and low-energy ESP32 microcontrollers to optimize irrigation schedules for domestic gardens. Users can monitor soil metrics, water reserves, and system status via a web dashboard built with Next.js and WebSockets.',
     githubUrl: 'https://github.com/example/iot-watering',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     mentorName: 'Dr. Sarah Connor',
     tags: ['IoT', 'ESP32', 'Next.js', 'WebSockets', 'C++'],
     members: [
-      { name: 'Alice Johnson', email: 'alice.johnson@student.edu', role: 'Hardware Architect & ESP32 Dev', isLead: true },
-      { name: 'Bob Smith', email: 'bob.smith@student.edu', role: 'Full Stack Web Developer', isLead: false }
+      { name: 'Nihal ', email: 'nihal.@student.edu', role: 'Hardware Architect & ESP32 Dev', isLead: true },
+      { name: 'Mrspidey', email: 'bob.smith@student.edu', role: 'Full Stack Web Developer', isLead: false }
     ]
   },
   {
@@ -57,7 +57,7 @@ async function seed() {
       console.error('Error: MONGODB_URI is not defined in the environment variables.');
       process.exit(1);
     }
-    
+
     await dbConnect();
     console.log('Connected to MongoDB database...');
 
