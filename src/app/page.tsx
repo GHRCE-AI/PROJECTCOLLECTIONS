@@ -5,7 +5,7 @@ import dbConnect from '@/lib/mongoose/mongoose';
 import Project from '@/models/Project';
 
 export const metadata: Metadata = {
-  title: 'ProjectVault – Discover Student Projects',
+  title: 'Raisoni-Projects – Discover Student Projects',
   description: 'Explore an ever-growing collection of student projects across all batches and technologies.',
 };
 
@@ -52,7 +52,7 @@ export default async function HomePage() {
           </h1>
 
           <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-            ProjectVault is where teachers publish student work and the world discovers tomorrow&apos;s innovators. Search by name, batch, tech stack, or team member.
+            Raisoni-Projects is where teachers publish student work and the world discovers tomorrow&apos;s innovators. Search by name, batch, tech stack, or team member.
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>

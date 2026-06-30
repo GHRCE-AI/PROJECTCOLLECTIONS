@@ -51,7 +51,7 @@ export default function RegisterPage() {
       });
 
       if (result?.ok) {
-        showToast('Account created! Welcome to ProjectVault 🎉', 'success');
+        showToast('Account created! Welcome to Raisoni-Projects 🎉', 'success');
         router.push('/dashboard');
         router.refresh();
       } else {
@@ -80,7 +80,7 @@ export default function RegisterPage() {
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Layers size={20} color="white" />
             </div>
-            Project<span className="gradient-text">Vault</span>
+            Raisoni<span className="gradient-text">-Projects</span>
           </Link>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '1.5rem', marginBottom: '0.5rem' }}>Create your account</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Start publishing student projects today</p>

@@ -1,6 +1,6 @@
-# ProjectVault – Teacher-Student Project Showcase
+# Raisoni-Projects – Teacher-Student Project Showcase
 
-ProjectVault is a clean, production-ready web application built with **Next.js 15 (App Router)** that allows teachers to register, login, and catalog student projects. The general public can explore projects through a robust search system filtering by project titles, descriptions, batch names, tags, and member details.
+Raisoni-Projects is a clean, production-ready web application built with **Next.js 15 (App Router)** that allows teachers to register, login, and catalog student projects. The general public can explore projects through a robust search system filtering by project titles, descriptions, batch names, tags, and member details.
 
 ## Tech Stack
 - **Framework**: Next.js 15 (App Router) + TypeScript + React 19
@@ -42,7 +42,7 @@ npm install
 ### 3. Setup Environment Variables
 Create a `.env` file in the root directory (based on `.env.example`):
 ```env
-MONGODB_URI=mongodb://localhost:27017/projectvault
+MONGODB_URI=mongodb://localhost:27017/raisoni-projects
 NEXTAUTH_SECRET=your_32_character_hexadecimal_secret_string
 NEXTAUTH_URL=http://localhost:3000
 ```

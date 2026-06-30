@@ -21,7 +21,7 @@ export default function Navbar() {
           }}>
             <Layers size={18} color="white" />
           </div>
-          <span>Project<span className="gradient-text">Vault</span></span>
+          <span>Raisoni<span className="gradient-text">-Projects</span></span>
         </Link>
 
         {/* Desktop Nav */}

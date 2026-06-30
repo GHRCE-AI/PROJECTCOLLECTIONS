@@ -6,14 +6,14 @@ import ToastProvider from '@/components/ToastProvider';
 
 export const metadata: Metadata = {
   title: {
-    default: 'ProjectVault – Student Project Showcase',
-    template: '%s | ProjectVault',
+    default: 'Raisoni-Projects – Student Project Showcase',
+    template: '%s | Raisoni-Projects',
   },
   description:
-    'ProjectVault is a platform where teachers publish student projects for the world to discover. Search, explore, and get inspired.',
+    'Raisoni-Projects is a platform where teachers publish student projects for the world to discover. Search, explore, and get inspired.',
   keywords: ['student projects', 'project showcase', 'academic projects', 'GitHub projects'],
   openGraph: {
-    title: 'ProjectVault – Student Project Showcase',
+    title: 'Raisoni-Projects – Student Project Showcase',
     description: 'Discover amazing student projects across all batches and technologies.',
     type: 'website',
     locale: 'en_US',

@@ -6,7 +6,7 @@ import ProjectForm from '@/components/dashboard/ProjectForm';
 
 export const metadata: Metadata = {
   title: 'Add New Project',
-  description: 'Publish a new student project to ProjectVault.',
+  description: 'Publish a new student project to Raisoni-Projects.',
 };
 
 export default async function AddProjectPage() {

@@ -55,7 +55,7 @@ export default function LoginPage() {
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Layers size={20} color="white" />
             </div>
-            Project<span className="gradient-text">Vault</span>
+            Raisoni<span className="gradient-text">-Projects</span>
           </Link>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '1.5rem', marginBottom: '0.5rem' }}>Welcome back</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Sign in to your teacher account</p>
