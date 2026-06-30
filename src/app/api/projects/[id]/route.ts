@@ -7,14 +7,14 @@ import { projectSchema } from '@/lib/validations/validations';
 import mongoose from 'mongoose';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
  * GET /api/projects/[id] - Public: get single project
  */
 export async function GET(_request: NextRequest, { params }: RouteParams) {
-  const { id } = params;
+  const { id } = await params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
   }
@@ -94,7 +94,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
   }

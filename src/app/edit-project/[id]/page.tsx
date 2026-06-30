@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 import ProjectForm from '@/components/dashboard/ProjectForm';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export const metadata: Metadata = {
@@ -19,10 +19,11 @@ export default async function EditProjectPage({ params }: PageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect('/auth/login');
 
-  if (!mongoose.Types.ObjectId.isValid(params.id)) notFound();
+  const { id } = await params;
+  if (!mongoose.Types.ObjectId.isValid(id)) notFound();
 
   await dbConnect();
-  const project = await Project.findById(params.id).lean();
+  const project = await Project.findById(id).lean();
 
   if (!project) notFound();
 
@@ -43,5 +44,5 @@ export default async function EditProjectPage({ params }: PageProps) {
     tags: project.tags,
   };
 
-  return <ProjectForm mode="edit" projectId={params.id} initialData={initialData} />;
+  return <ProjectForm mode="edit" projectId={id} initialData={initialData} />;
 }

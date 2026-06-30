@@ -8,14 +8,15 @@ import mongoose from 'mongoose';
 import CopyButton from '@/components/projects/CopyButton';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   try {
+    const { id } = await params;
     await dbConnect();
-    if (!mongoose.Types.ObjectId.isValid(params.id)) return { title: 'Project Not Found' };
-    const project = await Project.findById(params.id).lean();
+    if (!mongoose.Types.ObjectId.isValid(id)) return { title: 'Project Not Found' };
+    const project = await Project.findById(id).lean();
     if (!project) return { title: 'Project Not Found' };
     return {
       title: project.title,
@@ -31,10 +32,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
-  if (!mongoose.Types.ObjectId.isValid(params.id)) notFound();
+  const { id } = await params;
+  if (!mongoose.Types.ObjectId.isValid(id)) notFound();
 
   await dbConnect();
-  const project = await Project.findById(params.id).populate('createdBy', 'name email').lean();
+  const project = await Project.findById(id).populate('createdBy', 'name email').lean();
   if (!project) notFound();
 
   const lead = project.members.find((m) => m.isLead) || project.members[0];
