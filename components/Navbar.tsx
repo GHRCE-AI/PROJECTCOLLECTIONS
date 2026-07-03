@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
-import { BookOpen, Search, LayoutDashboard, LogIn, LogOut, Plus, Menu, X, Layers } from 'lucide-react';
+import { BookOpen, Search, LayoutDashboard, LogIn, LogOut, Plus, Menu, X, Layers, Info } from 'lucide-react';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -28,6 +28,9 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="desktop-nav">
           <Link href="/projects" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s' }}>
             <Search size={16} /> Explore
+          </Link>
+          <Link href="/about" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s' }}>
+            <Info size={16} /> About
           </Link>
           {session ? (
             <>
@@ -76,6 +79,9 @@ export default function Navbar() {
         }}>
           <Link href="/projects" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Search size={16} /> Explore Projects
+          </Link>
+          <Link href="/about" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Info size={16} /> About
           </Link>
           {session ? (
             <>
