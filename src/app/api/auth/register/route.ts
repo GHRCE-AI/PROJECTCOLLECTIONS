@@ -52,7 +52,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, email, password } = parsed.data;
+    const { name, email, password, accessCode } = parsed.data;
+
+    // Validate registration access code against environment variable
+    const requiredCode = process.env.TEACHER_REGISTRATION_CODE;
+    if (!requiredCode) {
+      return NextResponse.json(
+        { error: 'Server registration configuration error. Please contact administrators.' },
+        { status: 500 }
+      );
+    }
+
+    if (accessCode !== requiredCode) {
+      return NextResponse.json(
+        { error: 'Invalid registration access code' },
+        { status: 403 }
+      );
+    }
 
     await dbConnect();
 

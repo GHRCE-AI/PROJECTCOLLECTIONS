@@ -4,14 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Mail, Lock, User, LogIn, Loader2, Layers, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, LogIn, Loader2, Layers, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { showToast } = useToast();
 
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', accessCode: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -70,6 +70,7 @@ export default function RegisterPage() {
     { id: 'email', label: 'Email', type: 'email', placeholder: 'teacher@school.edu', icon: Mail, autocomplete: 'email' },
     { id: 'password', label: 'Password', type: showPassword ? 'text' : 'password', placeholder: 'Min 8 chars, 1 uppercase, 1 number', icon: Lock, autocomplete: 'new-password' },
     { id: 'confirmPassword', label: 'Confirm Password', type: showPassword ? 'text' : 'password', placeholder: '••••••••', icon: Lock, autocomplete: 'new-password' },
+    { id: 'accessCode', label: 'Registration Access Code', type: 'text', placeholder: 'Enter college registration code', icon: KeyRound, autocomplete: 'off' },
   ];
 
   return (
