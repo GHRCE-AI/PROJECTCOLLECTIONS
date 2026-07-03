@@ -2,6 +2,10 @@
 
 Raisoni-Projects is a clean, production-ready web application built with **Next.js 15 (App Router)** that allows teachers to register, login, and catalog student projects. The general public can explore projects through a robust search system filtering by project titles, descriptions, batch names, tags, and member details.
 
+⭐ **If you like this project, please consider giving it a star on GitHub!**  
+Repository Link: [https://github.com/MrSpideyNihal/Findmeproject](https://github.com/MrSpideyNihal/Findmeproject)
+
+
 ## Tech Stack
 - **Framework**: Next.js 15 (App Router) + TypeScript + React 19
 - **Database**: MongoDB + Mongoose with proper indexing for search performance
