@@ -4,11 +4,46 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Search, LayoutDashboard, LogIn, LogOut, Plus, Menu, X, Info, Star } from 'lucide-react';
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Returns inline styles for a nav link, highlighting it when active
+  const navLinkStyle = (href: string): React.CSSProperties => {
+    const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
+    return {
+      padding: '0.5rem 0.875rem',
+      borderRadius: 8,
+      color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+      fontSize: '0.9rem',
+      fontWeight: isActive ? 700 : 500,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.375rem',
+      transition: 'all 0.2s',
+      background: isActive ? 'rgba(124, 58, 237, 0.12)' : 'transparent',
+      boxShadow: isActive ? 'inset 0 0 0 1px rgba(124, 58, 237, 0.3)' : 'none',
+    };
+  };
+
+  const mobileNavLinkStyle = (href: string): React.CSSProperties => {
+    const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
+    return {
+      padding: '0.75rem',
+      borderRadius: 8,
+      color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontWeight: isActive ? 700 : 400,
+      background: isActive ? 'rgba(124, 58, 237, 0.12)' : 'transparent',
+      borderLeft: isActive ? '3px solid var(--accent-primary)' : '3px solid transparent',
+    };
+  };
 
   return (
     <nav className="navbar">
@@ -27,10 +62,10 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="desktop-nav">
-          <Link href="/projects" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s' }}>
+          <Link href="/projects" style={navLinkStyle('/projects')}>
             <Search size={16} /> Explore
           </Link>
-          <Link href="/about" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s' }}>
+          <Link href="/about" style={navLinkStyle('/about')}>
             <Info size={16} /> About
           </Link>
           <a
@@ -43,7 +78,7 @@ export default function Navbar() {
           </a>
           {session ? (
             <>
-              <Link href="/dashboard" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s' }}>
+              <Link href="/dashboard" style={navLinkStyle('/dashboard')}>
                 <LayoutDashboard size={16} /> Dashboard
               </Link>
               <Link href="/add-project" className="btn btn-primary btn-sm" style={{ marginLeft: '0.5rem' }}>
@@ -59,7 +94,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/auth/login" style={{ padding: '0.5rem 0.875rem', borderRadius: 8, color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+              <Link href="/auth/login" style={navLinkStyle('/auth/login')}>
                 <LogIn size={16} /> Login
               </Link>
               <Link href="/auth/register" className="btn btn-primary btn-sm" style={{ marginLeft: '0.5rem' }}>
@@ -86,10 +121,10 @@ export default function Navbar() {
           background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-secondary)',
           padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem'
         }}>
-          <Link href="/projects" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Link href="/projects" onClick={() => setMobileOpen(false)} style={mobileNavLinkStyle('/projects')}>
             <Search size={16} /> Explore Projects
           </Link>
-          <Link href="/about" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Link href="/about" onClick={() => setMobileOpen(false)} style={mobileNavLinkStyle('/about')}>
             <Info size={16} /> About
           </Link>
           <a
@@ -103,10 +138,10 @@ export default function Navbar() {
           </a>
           {session ? (
             <>
-              <Link href="/dashboard" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Link href="/dashboard" onClick={() => setMobileOpen(false)} style={mobileNavLinkStyle('/dashboard')}>
                 <LayoutDashboard size={16} /> Dashboard
               </Link>
-              <Link href="/add-project" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Link href="/add-project" onClick={() => setMobileOpen(false)} style={mobileNavLinkStyle('/add-project')}>
                 <Plus size={16} /> Add Project
               </Link>
               <button onClick={() => { signOut({ callbackUrl: '/' }); setMobileOpen(false); }} style={{ padding: '0.75rem', borderRadius: 8, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', textAlign: 'left' }}>
@@ -115,7 +150,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/auth/login" onClick={() => setMobileOpen(false)} style={{ padding: '0.75rem', borderRadius: 8, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Link href="/auth/login" onClick={() => setMobileOpen(false)} style={mobileNavLinkStyle('/auth/login')}>
                 <LogIn size={16} /> Login
               </Link>
               <Link href="/auth/register" onClick={() => setMobileOpen(false)} className="btn btn-primary" style={{ justifyContent: 'flex-start' }}>
@@ -135,3 +170,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
