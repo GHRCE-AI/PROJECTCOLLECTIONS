@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Mail, Lock, LogIn, Loader2, Layers, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { showToast } = useToast();
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +38,7 @@ export default function LoginPage() {
         showToast(result.error === 'CredentialsSignin' ? 'Invalid email or password' : result.error, 'error');
       } else {
         showToast('Signed in successfully!', 'success');
-        router.push('/dashboard');
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch {
