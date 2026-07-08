@@ -1,38 +1,52 @@
-# Raisoni-Projects – Teacher-Student Project Showcase
+# 🚀 Raisoni-Projects – Academic Project Showcase
 
-Raisoni-Projects is a clean, production-ready web application built with **Next.js 15 (App Router)** that allows teachers to register, login, and catalog student projects. The general public can explore projects through a robust search system filtering by project titles, descriptions, batch names, tags, and member details.
-
-⭐ **If you like this project, please consider giving it a star on GitHub!**  
-Repository Link: [https://github.com/MrSpideyNihal/Findmeproject](https://github.com/MrSpideyNihal/Findmeproject)
-
-
-## Tech Stack
-- **Framework**: Next.js 15 (App Router) + TypeScript + React 19
-- **Database**: MongoDB + Mongoose with proper indexing for search performance
-- **Authentication**: NextAuth.js (Credentials provider)
-- **Styling**: Modern dark-theme styling, glassmorphism, responsive cards
-- **Validation**: Zod (for input validation and API route protection)
-- **Security**: Rate limiting on registrations, hashed passwords, route protection middleware, and ownership verification
+### 🟢 `v1.0.0-stable`
+A unified academic project showcase platform designed for **G.H. Raisoni College of Engineering (GHRCE)** to exhibit student innovations, promote research, and connect tomorrow's engineers with industry leaders. Built with **Next.js 15 (App Router)**, MongoDB, and NextAuth.
 
 ---
 
-## Folder Structure
+## ✨ Features
+
+- **📂 Excel Batch Import**: Seamless parsing of `.xlsx` and `.xls` files via `SheetJS` (xlsx) with automatic field mapping and server-side Zod validation.
+- **🔐 Secure Authentication**: Protected routes (`/dashboard`, `/add-project`, `/edit-project`) guarded by JWT-based NextAuth credentials strategy.
+- **🛡️ Secure Design & Hardened APIs**: 
+  - Strict input schemas using Zod validation.
+  - Safe MongoDB queries with password values excluded (`select: false`) by default.
+  - Rate limiting on API auth endpoints to prevent brute-force attacks.
+- **🔍 Advanced Search System**: Fast search filtering by project title, tags, description abstracts, batch years, or specific student/lead names.
+- **⚡ Performance Aggregation**: Multi-aggregate queries to count team members and batch years efficiently in MongoDB without loading raw records.
+- **🎨 Premium Dark Theme**: Modern glassmorphism UI styled with vanilla CSS variables, interactive hover states, active tab indicators, and a responsive grid layout.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (App Router) + TypeScript + React 19
+- **Database**: MongoDB + Mongoose (with index-optimized search queries)
+- **Authentication**: NextAuth.js (Credentials provider)
+- **Styling**: Vanilla CSS, Glassmorphism, CSS Variables, Lucide icons
+- **Validation**: Zod (for input validation and API route protection)
+
+---
+
+## 📂 Folder Structure
+
 ```text
 /src/app
-  /api               - Registration, Projects lists, Batches
+  /api               - Registration, bulk excel import, search query endpoint, batches
   /dashboard         - Teacher authenticated dashboard
   /projects          - Public listing and detail pages
   /auth              - Custom Login & Registration pages
-/components          - Shared UI elements (Navbar, Toast, project cards)
-/lib                 - Database connection, validations, auth configs
+/components          - Shared UI elements (Navbar, Toast, project cards, ExcelImport)
+/lib                 - Database connection caching, validations, auth configs
 /models              - Mongoose Schemas (User, Project)
 /types               - custom next-auth type overrides
-/public              - static icons/logos
+/public              - static assets and logos
 ```
 
 ---
 
-## Local Setup
+## 🚀 Local Setup
 
 ### 1. Prerequisites
 - [Node.js v18+](https://nodejs.org/)
@@ -49,12 +63,12 @@ Create a `.env` file in the root directory (based on `.env.example`):
 MONGODB_URI=mongodb://localhost:27017/raisoni-projects
 NEXTAUTH_SECRET=your_32_character_hexadecimal_secret_string
 NEXTAUTH_URL=http://localhost:3000
+TEACHER_REGISTRATION_CODE=raisoni_sec_2027
 ```
 
 ### 4. Run Seed Script (Optional)
 Insert dummy data (a test teacher user `teacher@school.edu` / `Password123!` and 3 featured projects) into your database:
 ```bash
-# Register ts-node or run via node if compiled, or simply execute the seed.js script:
 node seed.js
 ```
 
@@ -66,7 +80,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Production & Netlify Deployment
+## 🌐 Production & Netlify Deployment
 
 This repository includes a `netlify.toml` file ready for deployment to Netlify:
 
@@ -76,6 +90,27 @@ This repository includes a `netlify.toml` file ready for deployment to Netlify:
    - `MONGODB_URI`: Your production MongoDB cluster connection string.
    - `NEXTAUTH_SECRET`: A long random secret key.
    - `NEXTAUTH_URL`: The URL of your deployed site (e.g., `https://your-app-name.netlify.app`).
+   - `TEACHER_REGISTRATION_CODE`: Secret signup token for teachers.
 4. Build settings will automatically read from `netlify.toml`:
    - Build Command: `npm run build`
    - Publish Directory: `.next`
+
+---
+
+## 👥 Credits & Project Roles
+
+### Core Platform
+- **Concept Proposal**: Dr. Achamma Thomas (Head of Department, AI)
+- **Faculty Advisor & Maintenance**: Prof. Vijaya Choudhary (Faculty Advisor)
+- **Lead Developer**: Nihal Rodge (Student, Batch of 2027)
+
+### Quality Assurance & Testing (Batch of 2027)
+* **Sagar Meshram** (AI) — Authentication & Login Security Testing
+* **Deepanshu Choudhary** (AI) — Functionality Verification
+* **Yogini Nasare** (AIML) — UI, Styling & Accessibility Audits
+* **Sumukh Nikhare** (AI) — Routing & Navigation Path Auditing
+* **Kshitija Lanjewar** (IOT) — Security & Vulnerability Scans
+
+### Technical Documentation & Writing (Batch of 2027)
+* **Harsh Aknurwar** (AI)
+* **Rohit Bhise** (AI)
