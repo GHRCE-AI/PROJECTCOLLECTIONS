@@ -1,25 +1,25 @@
-# 🚀 Raisoni-Projects – Academic Project Showcase
+# Raisoni-Projects – Academic Project Showcase
 
-### 🟢 `v1.0.0-stable`
-A unified academic project showcase platform designed for **G.H. Raisoni College of Engineering (GHRCE)** to exhibit student innovations, promote research, and connect tomorrow's engineers with industry leaders. Built with **Next.js 15 (App Router)**, MongoDB, and NextAuth.
+### Version 1.0.0-stable
+A unified academic project showcase platform designed for G.H. Raisoni College of Engineering (GHRCE) to exhibit student innovations, promote research, and connect tomorrow's engineers with industry leaders. Built with Next.js 15 (App Router), MongoDB, and NextAuth.
 
 ---
 
-## ✨ Features
+## Features
 
-- **📂 Excel Batch Import**: Seamless parsing of `.xlsx` and `.xls` files via `SheetJS` (xlsx) with automatic field mapping and server-side Zod validation.
-- **🔐 Secure Authentication**: Protected routes (`/dashboard`, `/add-project`, `/edit-project`) guarded by JWT-based NextAuth credentials strategy.
-- **🛡️ Secure Design & Hardened APIs**: 
+- **Excel Batch Import**: Seamless parsing of .xlsx and .xls files via SheetJS (xlsx) with automatic field mapping and server-side Zod validation.
+- **Secure Authentication**: Protected routes (/dashboard, /add-project, /edit-project) guarded by JWT-based NextAuth credentials strategy.
+- **Secure Design & Hardened APIs**: 
   - Strict input schemas using Zod validation.
-  - Safe MongoDB queries with password values excluded (`select: false`) by default.
+  - Safe MongoDB queries with password values excluded (select: false) by default.
   - Rate limiting on API auth endpoints to prevent brute-force attacks.
-- **🔍 Advanced Search System**: Fast search filtering by project title, tags, description abstracts, batch years, or specific student/lead names.
-- **⚡ Performance Aggregation**: Multi-aggregate queries to count team members and batch years efficiently in MongoDB without loading raw records.
-- **🎨 Premium Dark Theme**: Modern glassmorphism UI styled with vanilla CSS variables, interactive hover states, active tab indicators, and a responsive grid layout.
+- **Advanced Search System**: Fast search filtering by project title, tags, description abstracts, batch years, or specific student/lead names.
+- **Performance Aggregation**: Multi-aggregate queries to count team members and batch years efficiently in MongoDB without loading raw records.
+- **Premium Dark Theme**: Modern glassmorphism UI styled with vanilla CSS variables, interactive hover states, active tab indicators, and a responsive grid layout.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 15 (App Router) + TypeScript + React 19
 - **Database**: MongoDB + Mongoose (with index-optimized search queries)
@@ -29,7 +29,7 @@ A unified academic project showcase platform designed for **G.H. Raisoni College
 
 ---
 
-## 📂 Folder Structure
+## Folder Structure
 
 ```text
 /src/app
@@ -46,11 +46,11 @@ A unified academic project showcase platform designed for **G.H. Raisoni College
 
 ---
 
-## 🚀 Local Setup
+## Local Setup
 
 ### 1. Prerequisites
-- [Node.js v18+](https://nodejs.org/)
-- MongoDB running locally or a [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cluster connection string.
+- Node.js v18+
+- MongoDB running locally or a MongoDB Atlas cluster connection string.
 
 ### 2. Install Dependencies
 ```bash
@@ -58,7 +58,7 @@ npm install
 ```
 
 ### 3. Setup Environment Variables
-Create a `.env` file in the root directory (based on `.env.example`):
+Create a .env file in the root directory (based on .env.example):
 ```env
 MONGODB_URI=mongodb://localhost:27017/raisoni-projects
 NEXTAUTH_SECRET=your_32_character_hexadecimal_secret_string
@@ -67,7 +67,7 @@ TEACHER_REGISTRATION_CODE=raisoni_sec_2027
 ```
 
 ### 4. Run Seed Script (Optional)
-Insert dummy data (a test teacher user `teacher@school.edu` / `Password123!` and 3 featured projects) into your database:
+Insert dummy data (a test teacher user teacher@school.edu / Password123! and 3 featured projects) into your database:
 ```bash
 node seed.js
 ```
@@ -76,28 +76,28 @@ node seed.js
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open http://localhost:3000 in your browser.
 
 ---
 
-## 🌐 Production & Netlify Deployment
+## Production & Netlify Deployment
 
-This repository includes a `netlify.toml` file ready for deployment to Netlify:
+This repository includes a netlify.toml file ready for deployment to Netlify:
 
 1. Push your repository to GitHub.
 2. Link the repository to Netlify.
 3. Configure the following environment variables in the Netlify dashboard:
-   - `MONGODB_URI`: Your production MongoDB cluster connection string.
-   - `NEXTAUTH_SECRET`: A long random secret key.
-   - `NEXTAUTH_URL`: The URL of your deployed site (e.g., `https://your-app-name.netlify.app`).
-   - `TEACHER_REGISTRATION_CODE`: Secret signup token for teachers.
-4. Build settings will automatically read from `netlify.toml`:
-   - Build Command: `npm run build`
-   - Publish Directory: `.next`
+   - MONGODB_URI: Your production MongoDB cluster connection string.
+   - NEXTAUTH_SECRET: A long random secret key.
+   - NEXTAUTH_URL: The URL of your deployed site (e.g., https://your-app-name.netlify.app).
+   - TEACHER_REGISTRATION_CODE: Secret signup token for teachers.
+4. Build settings will automatically read from netlify.toml:
+   - Build Command: npm run build
+   - Publish Directory: .next
 
 ---
 
-## 👥 Credits & Project Roles
+## Credits & Project Roles
 
 ### Core Platform
 - **Concept Proposal**: Dr. Achamma Thomas (Head of Department, AI)
