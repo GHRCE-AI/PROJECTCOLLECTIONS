@@ -97,20 +97,6 @@ This repository includes a netlify.toml file ready for deployment to Netlify:
 
 ---
 
-## Credits & Project Roles
 
-### Core Platform
-- **Concept Proposal**: Dr. Achamma Thomas (Head of Department, AI)
-- **Faculty Advisor & Maintenance**: Prof. Vijaya Choudhary (Faculty Advisor)
-- **Lead Developer**: Nihal Rodge (Student, Batch of 2027)
 
-### Quality Assurance & Testing (Batch of 2027)
-* **Sagar Meshram** (AI) — Authentication & Login Security Testing
-* **Deepanshu Choudhary** (AI) — Functionality Verification
-* **Yogini Nasare** (AIML) — UI, Styling & Accessibility Audits
-* **Sumukh Nikhare** (AI) — Routing & Navigation Path Auditing
-* **Kshitija Lanjewar** (IOT) — Security & Vulnerability Scans
-
-### Technical Documentation & Writing (Batch of 2027)
-* **Harsh Aknurwar** (AI)
-* **Rohit Bhise** (AI)
+IF YOU LIKE  THIS  PROJECT START THE REPO!!!!
