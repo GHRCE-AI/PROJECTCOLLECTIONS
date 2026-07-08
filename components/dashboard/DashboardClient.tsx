@@ -3,7 +3,7 @@
 import { useState, lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Plus, Github, Calendar, Trash2, Edit3, ExternalLink, BookOpen, Users, Eye, FileSpreadsheet } from 'lucide-react';
+import { Plus, Github, Calendar, Trash2, Edit3, BookOpen, Users, Eye, FileSpreadsheet } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 const ExcelImport = lazy(() => import('@/components/dashboard/ExcelImport'));

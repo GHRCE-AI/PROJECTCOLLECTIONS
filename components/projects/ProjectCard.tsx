@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, Youtube, Users, Calendar, Tag, ExternalLink, ArrowRight } from 'lucide-react';
+import { Github, Users, Calendar, ArrowRight } from 'lucide-react';
 
 interface Member {
   name: string;

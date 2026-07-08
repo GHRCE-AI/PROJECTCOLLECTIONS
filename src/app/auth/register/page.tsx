@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Mail, Lock, User, LogIn, Loader2, Layers, Eye, EyeOff, KeyRound } from 'lucide-react';
+import { Mail, Lock, User, Loader2, Layers, Eye, EyeOff, KeyRound } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 export default function RegisterPage() {

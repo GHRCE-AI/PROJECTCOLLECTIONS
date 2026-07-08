@@ -21,16 +21,7 @@ import {
 import { useToast } from '@/components/ToastProvider';
 import { parseWorkbook, type ParsedProject } from '@/lib/parseExcel';
 
-// We need to import xlsx dynamically on the client
-type XLSX_TYPE = {
-  read: (data: ArrayBuffer, opts?: Record<string, unknown>) => {
-    SheetNames: string[];
-    Sheets: Record<string, unknown>;
-  };
-  utils: {
-    sheet_to_json: (sheet: unknown, opts: { header: number; defval: string }) => unknown[][];
-  };
-};
+
 
 interface ExcelImportProps {
   onClose: () => void;
@@ -82,6 +73,7 @@ export default function ExcelImport({ onClose, onImportComplete }: ExcelImportPr
 
     try {
       // Dynamic import of SheetJS
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const XLSX = (await import('xlsx')) as any;
 
       const arrayBuffer = await file.arrayBuffer();
@@ -167,8 +159,10 @@ export default function ExcelImport({ onClose, onImportComplete }: ExcelImportPr
 
     // Strip warnings and internal fields before sending
     const cleanedProjects = selectedProjects.map((proj) => {
-      const { warnings: _w, _sheetName: _s, ...rest } = proj;
-      return rest;
+      const cleaned = { ...proj } as Partial<ParsedProject>;
+      delete cleaned.warnings;
+      delete cleaned._sheetName;
+      return cleaned;
     });
 
     const BATCH_SIZE = 15;
@@ -417,7 +411,7 @@ export default function ExcelImport({ onClose, onImportComplete }: ExcelImportPr
 
               {/* Projects list */}
               <div className="excel-import-projects-list">
-                {filteredProjects.map((project, filteredIdx) => {
+                {filteredProjects.map((project) => {
                   const realIdx = projects.indexOf(project);
                   const isSelected = selected.has(realIdx);
                   const hasWarnings = project.warnings.length > 0;

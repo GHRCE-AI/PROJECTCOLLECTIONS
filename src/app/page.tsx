@@ -101,7 +101,6 @@ export default async function HomePage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
               {featuredProjects.map((project) => {
-                const lead = project.members.find((m) => m.isLead) || project.members[0];
                 return (
                   <Link href={`/projects/${project._id}`} key={project._id.toString()} style={{ textDecoration: 'none' }}>
                     <div className="project-card">

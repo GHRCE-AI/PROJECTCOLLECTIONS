@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, Minus, Loader2, Github, Youtube, User, Mail, Tag, ArrowLeft, Save } from 'lucide-react';
+import { Plus, Minus, Loader2, Github, Youtube, Tag, ArrowLeft, Save } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 interface Member {

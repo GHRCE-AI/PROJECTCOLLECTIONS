@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Github, Youtube, Users, Calendar, User, Tag, ArrowLeft, Copy, ExternalLink, Award } from 'lucide-react';
+import { Github, Youtube, Users, Calendar, User, Tag, ArrowLeft, Award } from 'lucide-react';
 import dbConnect from '@/lib/mongoose/mongoose';
 import Project from '@/models/Project';
 import mongoose from 'mongoose';

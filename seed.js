@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import dbConnect from './lib/mongoose/mongoose';
 import User from './models/User';

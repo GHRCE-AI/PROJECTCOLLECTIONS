@@ -323,6 +323,7 @@ export function parseSheet(
  * Main entry: parse all sheets from a workbook.
  * Takes the SheetJS workbook object.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function parseWorkbook(
   workbook: any,
   sheetToJson: any

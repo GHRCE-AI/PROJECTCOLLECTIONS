@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Search, X, ArrowUpDown } from 'lucide-react';
 import ProjectCard from '@/components/projects/ProjectCard';
 
@@ -76,7 +76,10 @@ export default function ProjectsPageClient() {
   }, [query, batch, tags, sortBy, page]);
 
   useEffect(() => {
-    fetchProjects();
+    const timer = setTimeout(() => {
+      fetchProjects();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchProjects]);
 
   // Fetch unique batches for filter dropdown
