@@ -42,6 +42,22 @@ function clean(val: unknown): string {
   return String(val).replace(/[\r\n]+/g, ' ').trim();
 }
 
+/** Sanitize and autocorrect emails from the sheet */
+function sanitizeEmail(email: string, name: string): string {
+  let cleaned = email.toLowerCase().replace(/\s+/g, '').trim();
+  // Autocorrect double dots (e.g., divya.sharma..missan.aiml@ghrce.raisoni.net)
+  cleaned = cleaned.replace(/\.\./g, '.');
+  
+  // Basic validation check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(cleaned)) {
+    // If still invalid, generate a safe fallback
+    const safeName = name.toLowerCase().replace(/[^a-z0-9]/g, '.');
+    return `${safeName}@student.edu`;
+  }
+  return cleaned;
+}
+
 /** Detect column layout for a given header row */
 interface ColumnMap {
   batchNo: number;
@@ -266,10 +282,10 @@ export function parseSheet(
       warnings.push('GitHub URL needs to be added manually');
 
       // Add the first member (the row that defines the project)
-      if (studentName && email) {
+      if (studentName) {
         currentProject.members.push({
           name: studentName,
-          email: email.toLowerCase().replace(/\s/g, ''),
+          email: sanitizeEmail(email, studentName),
           role: 'Team Member',
           isLead: true, // First member is assumed to be lead
         });
@@ -278,7 +294,7 @@ export function parseSheet(
       // This is a member row belonging to the current project group
       currentProject.members.push({
         name: studentName,
-        email: email ? email.toLowerCase().replace(/\s/g, '') : `${studentName.toLowerCase().replace(/\s/g, '.')}@student.edu`,
+        email: sanitizeEmail(email, studentName),
         role: 'Team Member',
         isLead: false,
       });

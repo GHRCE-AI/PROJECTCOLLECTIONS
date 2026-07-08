@@ -3,19 +3,10 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import dbConnect from '@/lib/mongoose/mongoose';
 import Project from '@/models/Project';
-import { bulkImportSchema } from '@/lib/validations/bulkValidations';
+import { bulkProjectSchema } from '@/lib/validations/bulkValidations';
 
 const BATCH_SIZE = 10;
 
-/**
- * POST /api/projects/bulk
- *
- * Accepts an array of parsed projects and inserts them in batches.
- * Protected route — requires authenticated session.
- *
- * Request body: { projects: BulkProjectInput[] }
- * Response: { inserted: number, failed: { index, title, errors }[], total: number }
- */
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -27,21 +18,24 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const parsed = bulkImportSchema.safeParse(body);
+    const rawProjects = Array.isArray(body.projects) ? body.projects : [];
 
-    if (!parsed.success) {
+    if (rawProjects.length === 0) {
       return NextResponse.json(
-        {
-          error: 'Validation failed',
-          issues: parsed.error.flatten().fieldErrors,
-        },
-        { status: 422 }
+        { error: 'No projects provided for import' },
+        { status: 400 }
+      );
+    }
+
+    if (rawProjects.length > 200) {
+      return NextResponse.json(
+        { error: 'Cannot import more than 200 projects at once' },
+        { status: 400 }
       );
     }
 
     await dbConnect();
 
-    const { projects } = parsed.data;
     const results: {
       inserted: number;
       failed: { index: number; title: string; errors: string[] }[];
@@ -49,60 +43,81 @@ export async function POST(request: NextRequest) {
     } = {
       inserted: 0,
       failed: [],
-      total: projects.length,
+      total: rawProjects.length,
     };
 
-    // Process in batches to avoid overwhelming MongoDB
-    for (let i = 0; i < projects.length; i += BATCH_SIZE) {
-      const batch = projects.slice(i, i + BATCH_SIZE);
+    // Pre-validate all projects and separate them into valid & invalid
+    const validProjectsWithIndex: { project: any; index: number }[] = [];
 
-      const docsToInsert = batch.map((proj) => ({
-        ...proj,
+    rawProjects.forEach((proj: any, index: number) => {
+      const parsed = bulkProjectSchema.safeParse(proj);
+      if (!parsed.success) {
+        // Flatten error messages to simple string format
+        const errorList: string[] = [];
+        const fieldErrors = parsed.error.flatten().fieldErrors;
+        Object.entries(fieldErrors).forEach(([field, msgs]) => {
+          if (msgs) {
+            errorList.push(`${field}: ${msgs.join(', ')}`);
+          }
+        });
+
+        results.failed.push({
+          index,
+          title: proj.title || `Project #${index + 1}`,
+          errors: errorList.length > 0 ? errorList : ['Validation failed'],
+        });
+      } else {
+        validProjectsWithIndex.push({
+          project: parsed.data,
+          index,
+        });
+      }
+    });
+
+    // Process valid projects in batches
+    for (let i = 0; i < validProjectsWithIndex.length; i += BATCH_SIZE) {
+      const batchWithIndex = validProjectsWithIndex.slice(i, i + BATCH_SIZE);
+      const batchDocs = batchWithIndex.map((item) => ({
+        ...item.project,
         createdBy: session.user.id,
       }));
 
       try {
-        // Use insertMany with ordered:false so one failure doesn't stop the rest
-        const insertResult = await Project.insertMany(docsToInsert, {
+        const insertResult = await Project.insertMany(batchDocs, {
           ordered: false,
         });
         results.inserted += insertResult.length;
-      } catch (bulkError: unknown) {
-        // insertMany with ordered:false throws a BulkWriteError but still inserts valid docs
-        const err = bulkError as {
-          insertedDocs?: unknown[];
-          writeErrors?: { index: number; errmsg?: string }[];
-        };
-
-        if (err.insertedDocs) {
-          results.inserted += (err.insertedDocs as unknown[]).length;
+      } catch (bulkError: any) {
+        if (bulkError.insertedDocs) {
+          results.inserted += bulkError.insertedDocs.length;
         }
 
-        if (err.writeErrors) {
-          for (const writeErr of err.writeErrors) {
-            const globalIdx = i + writeErr.index;
-            results.failed.push({
-              index: globalIdx,
-              title: projects[globalIdx]?.title || 'Unknown',
-              errors: [writeErr.errmsg || 'Database insertion failed'],
-            });
+        if (bulkError.writeErrors) {
+          for (const writeErr of bulkError.writeErrors) {
+            const item = batchWithIndex[writeErr.index];
+            if (item) {
+              results.failed.push({
+                index: item.index,
+                title: item.project.title || 'Unknown',
+                errors: [writeErr.errmsg || 'Database insertion failed'],
+              });
+            }
           }
         } else {
-          // If it's not a BulkWriteError, mark the whole batch as failed
-          for (let j = 0; j < batch.length; j++) {
+          // If it's a general batch write error, fail the batch items
+          for (const item of batchWithIndex) {
             results.failed.push({
-              index: i + j,
-              title: batch[j]?.title || 'Unknown',
-              errors: [
-                bulkError instanceof Error
-                  ? bulkError.message
-                  : 'Batch insertion failed',
-              ],
+              index: item.index,
+              title: item.project.title || 'Unknown',
+              errors: [bulkError.message || 'Batch insertion failed'],
             });
           }
         }
       }
     }
+
+    // Sort failed results by index so they align with original request
+    results.failed.sort((a, b) => a.index - b.index);
 
     return NextResponse.json(results, {
       status: results.failed.length > 0 ? 207 : 201,
