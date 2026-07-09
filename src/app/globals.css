@@ -707,6 +707,9 @@ tr:hover td {
   border-radius: var(--radius-md);
   transition: all 0.2s;
   overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .excel-import-project-card:hover {
@@ -730,6 +733,23 @@ tr:hover td {
   cursor: pointer;
 }
 
+.excel-import-project-header h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.excel-import-project-header span {
+  font-size: inherit;
+  line-height: 1.4;
+}
+
+.excel-import-project-header div {
+  line-height: 1.4;
+}
+
 .excel-import-checkbox {
   flex-shrink: 0;
   margin-top: 0.125rem;
@@ -739,6 +759,33 @@ tr:hover td {
   padding: 0 1rem 1rem 3rem;
   border-top: 1px solid var(--border-secondary);
   padding-top: 0.75rem;
+}
+
+/* Tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-secondary);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.tag-cyan {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.25);
+  color: var(--accent-secondary);
+}
+
+.tag-amber {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: var(--accent-tertiary);
 }
 
 /* Warning Badge */
@@ -774,3 +821,26 @@ tr:hover td {
   box-shadow: 0 0 10px var(--glow-purple);
 }
 
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Stat Card (used in import results) */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
