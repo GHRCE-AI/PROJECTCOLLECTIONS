@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Ping Site to Keep MongoDB Atlas Active
         run: |
-          URL="https://dewknd.netlify.app"
+          URL="https://ghrceprojects.netlify.app"
           echo "Pinging $URL to keep MongoDB Atlas active..."
           curl --retry 3 --retry-delay 5 -f -L "$URL/api/batches" \
             && echo "✅ Ping successful via /api/batches" \
