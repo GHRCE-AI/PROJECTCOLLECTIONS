@@ -2,20 +2,20 @@ name: Keep Database Warm
 
 on:
   schedule:
-    # Runs at 00:00 UTC every day
-    - cron: '0 0 * * *'
+    # Runs every 6 hours to keep MongoDB Atlas from sleeping
+    - cron: '0 */6 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Site to Keep Database Warm
+      - name: Ping Site to Keep MongoDB Atlas Active
         run: |
-          URL="${{ secrets.DEPLOYED_URL }}"
-          if [ -z "$URL" ]; then
-            echo "⚠️ DEPLOYED_URL secret is not set. Please add it to your GitHub Repository Secrets."
-            exit 1
-          fi
+          URL="https://dewknd.netlify.app"
           echo "Pinging $URL to keep MongoDB Atlas active..."
-          curl -f -L "$URL/api/batches" || curl -f -L "$URL"
+          curl --retry 3 --retry-delay 5 -f -L "$URL/api/batches" \
+            && echo "✅ Ping successful via /api/batches" \
+            || (curl --retry 3 --retry-delay 5 -f -L "$URL" \
+              && echo "✅ Ping successful via root URL" \
+              || echo "⚠️ Ping failed but not blocking CI")
