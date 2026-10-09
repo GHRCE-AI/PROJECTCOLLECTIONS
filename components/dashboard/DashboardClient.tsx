@@ -3,8 +3,9 @@
 import { useState, lazy, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Plus, Github, Calendar, Trash2, Edit3, FolderGit2, Users, Eye, FileSpreadsheet, Search, AlertTriangle, Check, X } from 'lucide-react';
+import { Plus, Github, Calendar, Trash2, Edit3, FolderGit2, Users, Eye, FileSpreadsheet, Search, Check, X } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
+import { safeHttpUrl } from '@/lib/url';
 
 const ExcelImport = lazy(() => import('@/components/dashboard/ExcelImport'));
 
@@ -268,8 +269,8 @@ export default function DashboardClient({ user, initialProjects }: DashboardClie
                     <Eye size={14} /> View
                   </Link>
 
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm" title="View GitHub Code">
+                  {safeHttpUrl(project.githubUrl) && (
+                    <a href={safeHttpUrl(project.githubUrl)} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm" title="View GitHub Code">
                       <Github size={14} />
                     </a>
                   )}

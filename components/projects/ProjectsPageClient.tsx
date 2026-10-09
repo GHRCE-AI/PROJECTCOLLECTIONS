@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Search, X, ArrowUpDown, Filter, RotateCcw, Layers } from 'lucide-react';
+import { Search, X, RotateCcw, Layers } from 'lucide-react';
 import ProjectCard from '@/components/projects/ProjectCard';
 
 interface Project {

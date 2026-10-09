@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Award, Lightbulb, Users, CheckCircle2, FileText, Code2, GraduationCap } from 'lucide-react';
+import Link from 'next/link';
+import { Award, Lightbulb, Users, CheckCircle2, Star, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About | Raisoni-Projects',
+  title: 'About',
   description: 'Learn about Raisoni-Projects, the student innovation showcase platform for G.H. Raisoni College of Engineering.',
 };
 
@@ -197,35 +198,35 @@ export default function AboutPage() {
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Documentation Card */}
-            <div
-              style={{
-                background: '#ffffff',
-                border: '1px solid var(--border-secondary)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.5rem',
-                boxShadow: 'var(--shadow-xs)',
-              }}
-            >
-              <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '1.15rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)' }}>
-                <FileText size={18} color="var(--accent-brand)" />
-                Documentation & Specification
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                {[
-                  { name: 'Harsh Aknurwar', dept: 'AI - 2027', role: 'Technical Documentation' },
-                  { name: 'Rohit Bhise', dept: 'AI - 2027', role: 'Schema & API Specification' }
-                ].map((doc, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: i < 1 ? '1px solid var(--border-subtle)' : 'none', paddingBottom: i < 1 ? '0.65rem' : '0', gap: '0.75rem' }}>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-primary)' }}>{doc.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{doc.dept}</div>
-                    </div>
-                    <span className="tag tag-batch" style={{ fontSize: '0.725rem' }}>{doc.role}</span>
-                  </div>
-                ))}
-              </div>
+          {/* ── Made by credit (About page only) ──────────────────────────── */}
+          <div
+            style={{
+              marginTop: '3.5rem',
+              paddingTop: '2rem',
+              borderTop: '2px dashed var(--border-secondary)',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ fontFamily: 'var(--font-hand)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+              Made by Nihal Rodge
+            </p>
+            <p style={{ fontFamily: 'var(--font-hand)', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
+              Full-stack engineering, database infrastructure & UI design system
+            </p>
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a
+                href="https://github.com/MrSpideyNihal/Findmeproject"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-accent btn-sm"
+              >
+                <Star size={15} /> Star this repo
+              </a>
+              <Link href="/privacy" className="btn btn-secondary btn-sm">
+                <Shield size={15} /> Privacy Policy
+              </Link>
             </div>
           </div>
         </div>

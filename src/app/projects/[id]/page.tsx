@@ -6,6 +6,7 @@ import dbConnect from '@/lib/mongoose/mongoose';
 import Project from '@/models/Project';
 import mongoose from 'mongoose';
 import CopyButton from '@/components/projects/CopyButton';
+import { safeHttpUrl } from '@/lib/url';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const project = await Project.findById(id).lean();
     if (!project) return { title: 'Project Not Found' };
     return {
-      title: `${project.title} | Raisoni-Projects`,
+      title: project.title,
       description: project.abstract.slice(0, 160),
       openGraph: {
         title: project.title,
@@ -49,6 +50,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   };
 
   const embedId = project.youtubeUrl ? getYouTubeEmbedId(project.youtubeUrl) : null;
+  // Only ever use http(s) URLs as hrefs (defence against stored javascript: URLs).
+  const safeGithub = safeHttpUrl(project.githubUrl);
+  const safeYoutube = safeHttpUrl(project.youtubeUrl);
 
   return (
     <div style={{ padding: '2.5rem 0 5rem', minHeight: '85vh' }}>
@@ -119,16 +123,16 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
           {/* Action Row */}
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', paddingTop: '1.25rem', borderTop: '1px solid var(--border-subtle)' }}>
-            {project.githubUrl && (
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            {safeGithub && (
+              <a href={safeGithub} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 <Github size={16} /> View Code on GitHub
               </a>
             )}
-            {project.githubUrl && (
-              <CopyButton text={project.githubUrl} label="Copy GitHub Link" />
+            {safeGithub && (
+              <CopyButton text={safeGithub} label="Copy GitHub Link" />
             )}
-            {project.youtubeUrl && (
-              <a href={project.youtubeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+            {safeYoutube && (
+              <a href={safeYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
                 <Video size={16} color="#dc2626" /> Watch Video Demo
               </a>
             )}

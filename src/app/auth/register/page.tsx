@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Mail, Lock, User, Loader2, Eye, EyeOff, KeyRound } from 'lucide-react';
+import { Mail, Lock, User, Loader2, Eye, EyeOff, KeyRound, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 
 export default function RegisterPage() {
@@ -17,6 +17,41 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
+  // ── Server-verified addition captcha ────────────────────────────────────────
+  const [captcha, setCaptcha] = useState<{ a: number; b: number; token: string } | null>(null);
+  const [captchaAnswer, setCaptchaAnswer] = useState('');
+
+  const newCaptcha = useCallback(async () => {
+    try {
+      const res = await fetch('/api/captcha', { cache: 'no-store' });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setCaptcha({ a: data.a, b: data.b, token: data.token });
+      setCaptchaAnswer('');
+    } catch {
+      setCaptcha(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Load the first challenge on mount. setState runs only after the awaited
+    // fetch resolves, so it never fires synchronously during the effect.
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/captcha', { cache: 'no-store' });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (active) setCaptcha({ a: data.a, b: data.b, token: data.token });
+      } catch {
+        if (active) setCaptcha(null);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: [] }));
@@ -25,13 +60,24 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+
+    if (!captcha) {
+      showToast('Security check failed to load. Please refresh it.', 'error');
+      return;
+    }
+    if (parseInt(captchaAnswer, 10) !== captcha.a + captcha.b) {
+      setErrors({ captcha: ['Incorrect answer. Please solve the sum to continue.'] });
+      newCaptcha();
+      return;
+    }
+
     setLoading(true);
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, captchaAnswer, captchaToken: captcha.token }),
       });
       const data = await res.json();
 
@@ -41,15 +87,28 @@ export default function RegisterPage() {
         } else {
           showToast(data.error || 'Registration failed', 'error');
         }
+        newCaptcha();
         return;
       }
 
-      // Auto sign-in after registration
-      const result = await signIn('credentials', {
-        email: form.email,
-        password: form.password,
-        redirect: false,
-      });
+      // Auto sign-in after registration (needs its own fresh captcha token).
+      let signInCaptcha: { a: number; b: number; token: string } | null = null;
+      try {
+        const cRes = await fetch('/api/captcha', { cache: 'no-store' });
+        if (cRes.ok) signInCaptcha = await cRes.json();
+      } catch {
+        signInCaptcha = null;
+      }
+
+      const result = signInCaptcha
+        ? await signIn('credentials', {
+            email: form.email,
+            password: form.password,
+            captchaAnswer: String(signInCaptcha.a + signInCaptcha.b),
+            captchaToken: signInCaptcha.token,
+            redirect: false,
+          })
+        : null;
 
       if (result?.ok) {
         showToast('Account created successfully. Welcome to Raisoni-Projects', 'success');
@@ -163,6 +222,60 @@ export default function RegisterPage() {
                 ))}
               </div>
             ))}
+
+            {/* ── Addition captcha ─────────────────────────────────────────── */}
+            <div className="form-group">
+              <label className="form-label required" htmlFor="captcha" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <ShieldCheck size={15} color="var(--accent-brand)" /> Security Check
+              </label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '1.6rem',
+                    fontWeight: 700,
+                    background: 'var(--highlight-soft)',
+                    border: '2px solid var(--ink)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.1rem 0.9rem',
+                    whiteSpace: 'nowrap',
+                    userSelect: 'none',
+                    color: 'var(--text-primary)',
+                    minWidth: 118,
+                    textAlign: 'center',
+                  }}
+                  aria-label={captcha ? `What is ${captcha.a} plus ${captcha.b}?` : 'Loading'}
+                >
+                  {captcha ? `${captcha.a} + ${captcha.b} = ?` : '…'}
+                </span>
+                <input
+                  id="captcha"
+                  type="text"
+                  inputMode="numeric"
+                  value={captchaAnswer}
+                  onChange={(e) => {
+                    setCaptchaAnswer(e.target.value.replace(/[^0-9]/g, ''));
+                    if (errors.captcha) setErrors((p) => ({ ...p, captcha: [] }));
+                  }}
+                  placeholder="Answer"
+                  className={`form-input ${errors.captcha?.length ? 'error' : ''}`}
+                  style={{ maxWidth: 120 }}
+                  autoComplete="off"
+                />
+                <button
+                  type="button"
+                  onClick={newCaptcha}
+                  title="New question"
+                  aria-label="Refresh security check"
+                  style={{ background: 'none', border: '2px solid var(--ink)', borderRadius: 'var(--radius-sm)', padding: '0.5rem', cursor: 'pointer', color: 'var(--text-primary)', display: 'flex' }}
+                >
+                  <RefreshCw size={16} />
+                </button>
+              </div>
+              {errors.captcha?.map((err, i) => (
+                <span key={i} className="form-error">{err}</span>
+              ))}
+            </div>
 
             <button
               type="submit"

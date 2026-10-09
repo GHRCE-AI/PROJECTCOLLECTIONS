@@ -18,7 +18,6 @@ import {
   Square,
   RotateCcw,
   Info,
-  ShieldCheck,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastProvider';
 import { parseWorkbook, type ParsedProject } from '@/lib/parseExcel';

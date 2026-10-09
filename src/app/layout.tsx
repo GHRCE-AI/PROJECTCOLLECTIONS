@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import StarBanner from '@/components/StarBanner';
+import Footer from '@/components/Footer';
 import SessionProvider from '@/components/SessionProvider';
 import ToastProvider from '@/components/ToastProvider';
 
@@ -30,10 +32,12 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <ToastProvider>
+            <StarBanner />
             <Navbar />
-            <main style={{ position: 'relative', zIndex: 1 }}>
+            <main style={{ position: 'relative', zIndex: 1, minHeight: '70vh' }}>
               {children}
             </main>
+            <Footer />
           </ToastProvider>
         </SessionProvider>
       </body>

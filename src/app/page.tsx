@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Search, Github, Users, Layers, ArrowRight, FolderGit2, CheckCircle2, ChevronRight, Calendar } from 'lucide-react';
+import { Search, Github, Users, Layers, ArrowRight, FolderGit2, Lightbulb, Rocket, Calendar } from 'lucide-react';
 import dbConnect from '@/lib/mongoose/mongoose';
 import Project from '@/models/Project';
 
 export const metadata: Metadata = {
   title: 'Raisoni-Projects – Student Innovation & Engineering Showcase',
-  description: 'Explore engineering and research projects created by students of G.H. Raisoni College of Engineering.',
+  description: 'Discover, explore and get inspired by amazing college projects from students of G.H. Raisoni College of Engineering.',
 };
 
 async function getStats() {
@@ -31,7 +31,7 @@ async function getStats() {
 async function getFeaturedProjects() {
   try {
     await dbConnect();
-    return await Project.find().sort({ createdAt: -1 }).limit(6).lean();
+    return await Project.find().sort({ createdAt: -1 }).limit(4).lean();
   } catch {
     return [];
   }
@@ -42,205 +42,142 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* ── Clean Hero Section ───────────────────────────────────────── */}
-      <section className="hero-clean" style={{ padding: '4.5rem 0 3.5rem', position: 'relative' }}>
-        <div className="container" style={{ textAlign: 'center', maxWidth: 860 }}>
-          {/* Institutional Badge */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.35rem 0.85rem',
-              background: 'var(--bg-subtle)',
-              border: '1px solid var(--border-secondary)',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.8125rem',
-              color: 'var(--text-secondary)',
-              fontWeight: 500,
-              marginBottom: '1.5rem',
-            }}
-          >
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)' }} />
-            G.H. Raisoni College of Engineering
+      {/* ── Hero — "College Projects Made Simple" ─────────────────────────────── */}
+      <section className="hero-clean" style={{ padding: '3.5rem 0 3rem', position: 'relative', overflow: 'hidden' }}>
+        <div className="container hero-grid">
+          {/* Left: headline */}
+          <div>
+            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)', fontWeight: 700, lineHeight: 1.05, marginBottom: '1.25rem', color: 'var(--text-primary)' }}>
+              College Projects
+              <br />
+              Made <span className="hl">Simple</span>
+            </h1>
+            <p style={{ fontFamily: 'var(--font-hand)', fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: 480, marginBottom: '1.75rem', lineHeight: 1.5 }}>
+              Discover, explore and get inspired by amazing college projects from students like you.
+            </p>
+            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <Link href="/projects" className="btn btn-accent btn-lg">
+                <Search size={18} /> Explore Projects <ArrowRight size={18} />
+              </Link>
+              <Link href="/auth/login" className="btn btn-secondary btn-lg">
+                Teacher Login
+              </Link>
+            </div>
           </div>
 
-          <h1
-            style={{
-              fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
-              fontWeight: 800,
-              lineHeight: 1.15,
-              marginBottom: '1.25rem',
-              color: 'var(--text-primary)',
-              letterSpacing: '-0.035em',
-            }}
-          >
-            Student Engineering &<br />Innovation Showcase
-          </h1>
-
-          <p
-            style={{
-              fontSize: '1.1rem',
-              color: 'var(--text-secondary)',
-              maxWidth: 620,
-              margin: '0 auto 2.25rem',
-              lineHeight: 1.6,
-            }}
-          >
-            Discover, evaluate, and collaborate on production-ready student projects, research models, and technical innovations across all departments.
-          </p>
-
-          {/* Quick Actions */}
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3rem' }}>
-            <Link href="/projects" className="btn btn-primary btn-lg">
-              <Search size={17} /> Explore All Projects
-            </Link>
-            <Link href="/auth/register" className="btn btn-secondary btn-lg">
-              Teacher Portal <ArrowRight size={17} />
-            </Link>
-          </div>
-
-          {/* Metrics Row (Nixtio style clean cards) */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1rem',
-              textAlign: 'left',
-            }}
-          >
-            <div className="stat-card">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span className="stat-label">Published Projects</span>
-                <FolderGit2 size={18} color="var(--text-muted)" />
+          {/* Right: sketch laptop + sticky note */}
+          <div style={{ position: 'relative', minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="tape" style={{ top: 6, left: '42%', zIndex: 3 }} />
+            <div
+              className="paper-torn"
+              style={{
+                borderRadius: 'var(--radius-md)',
+                padding: '1.5rem',
+                transform: 'rotate(-1.5deg)',
+                background: 'linear-gradient(135deg, #cfe4ff 0%, #bcd6f5 100%)',
+                maxWidth: 360,
+                width: '100%',
+              }}
+            >
+              {/* doodled laptop */}
+              <div style={{ border: '3px solid var(--ink)', borderRadius: '10px 12px 10px 12px', background: '#1f1b16', padding: '1.5rem 1.25rem', textAlign: 'center' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: '#ffd23c', fontWeight: 700 }}>&lt;/&gt;</span>
               </div>
-              <div className="stat-number">{stats.totalProjects.toLocaleString()}</div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--color-success)', fontWeight: 600 }}>
-                Verified academic submissions
-              </span>
+              <div style={{ height: 10, background: 'var(--ink)', borderRadius: '0 0 8px 8px', marginTop: 4 }} />
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-hand)', fontWeight: 700, marginTop: '0.75rem', color: 'var(--ink)' }}>
+                Code · Create · Innovate
+              </p>
             </div>
-
-            <div className="stat-card">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span className="stat-label">Student Innovators</span>
-                <Users size={18} color="var(--text-muted)" />
-              </div>
-              <div className="stat-number">{stats.totalMembers.toLocaleString()}</div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                Across all project groups
-              </span>
-            </div>
-
-            <div className="stat-card">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span className="stat-label">Academic Batches</span>
-                <Layers size={18} color="var(--text-muted)" />
-              </div>
-              <div className="stat-number">{stats.totalBatches}</div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                Engineering cohorts
-              </span>
+            <div className="sticky-note" style={{ position: 'absolute', bottom: -10, right: -6, maxWidth: 150, zIndex: 4, fontSize: '0.95rem' }}>
+              Good Projects → Better Future :)
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Featured Projects Section ─────────────────────────────────── */}
-      {featuredProjects.length > 0 && (
-        <section style={{ padding: '3.5rem 0 4.5rem' }}>
-          <div className="container">
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--accent-brand)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Recent Submissions
-                </span>
-                <h2 style={{ fontSize: '1.65rem', fontWeight: 800, marginTop: '0.25rem', color: 'var(--text-primary)' }}>
-                  Latest Student Projects
-                </h2>
+      {/* ── Stats strip ───────────────────────────────────────────────────────── */}
+      <section style={{ padding: '2rem 0 0.5rem' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+            <div className="stat-card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                <span className="stat-label">Published Projects</span>
+                <FolderGit2 size={20} color="var(--accent-brand)" />
               </div>
+              <div className="stat-number">{stats.totalProjects.toLocaleString()}</div>
+            </div>
+            <div className="stat-card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                <span className="stat-label">Student Innovators</span>
+                <Users size={20} color="var(--accent-brand)" />
+              </div>
+              <div className="stat-number">{stats.totalMembers.toLocaleString()}</div>
+            </div>
+            <div className="stat-card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                <span className="stat-label">Academic Batches</span>
+                <Layers size={20} color="var(--accent-brand)" />
+              </div>
+              <div className="stat-number">{stats.totalBatches}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Latest Projects ───────────────────────────────────────────────────── */}
+      {featuredProjects.length > 0 && (
+        <section style={{ padding: '2.5rem 0 3rem' }}>
+          <div className="container">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', borderBottom: '3px solid var(--ink)', paddingBottom: '0.15rem' }}>
+                Latest Projects
+              </h2>
               <Link href="/projects" className="btn btn-secondary btn-sm">
-                View All Projects <ChevronRight size={15} />
+                View All <ArrowRight size={15} />
               </Link>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.25rem' }}>
-              {featuredProjects.map((project) => {
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.5rem' }}>
+              {featuredProjects.map((project, i) => {
                 const lead = project.members?.find((m: { isLead?: boolean }) => m.isLead) || project.members?.[0];
+                const rotations = ['-1deg', '0.8deg', '-0.6deg', '1deg'];
                 return (
                   <Link
                     href={`/projects/${project._id}`}
                     key={project._id.toString()}
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
-                    <div className="project-card" style={{ height: '100%' }}>
+                    <div className="project-card" style={{ height: '100%', transform: `rotate(${rotations[i % rotations.length]})` }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.75rem' }}>
                         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                          <span className="tag tag-group">{project.groupName}</span>
                           <span className="tag tag-batch">{project.batchName}</span>
                         </div>
                         {project.githubUrl && (
-                          <div style={{ color: 'var(--text-muted)' }}>
-                            <Github size={16} />
-                          </div>
+                          <Github size={17} color="var(--text-muted)" />
                         )}
                       </div>
 
-                      <h3
-                        style={{
-                          fontSize: '1.05rem',
-                          fontWeight: 700,
-                          lineHeight: 1.35,
-                          marginBottom: '0.5rem',
-                          color: 'var(--text-primary)',
-                        }}
-                      >
+                      <h3 style={{ fontSize: '1.2rem', fontWeight: 700, lineHeight: 1.25, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
                         {project.title}
                       </h3>
 
-                      <p
-                        style={{
-                          fontSize: '0.85rem',
-                          color: 'var(--text-secondary)',
-                          lineHeight: 1.55,
-                          marginBottom: '1rem',
-                          flex: 1,
-                        }}
-                      >
-                        {project.abstract?.length > 130 ? `${project.abstract.slice(0, 130)}...` : project.abstract}
+                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '1rem', flex: 1 }}>
+                        {project.abstract?.length > 120 ? `${project.abstract.slice(0, 120)}...` : project.abstract}
                       </p>
 
-                      {/* Tech Tags */}
                       {project.tags?.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1rem' }}>
                           {project.tags.slice(0, 3).map((t: string) => (
-                            <span key={t} className="tag">
-                              {t}
-                            </span>
+                            <span key={t} className="tag">{t}</span>
                           ))}
-                          {project.tags.length > 3 && (
-                            <span className="tag" style={{ color: 'var(--text-muted)' }}>
-                              +{project.tags.length - 3}
-                            </span>
-                          )}
                         </div>
                       )}
 
-                      {/* Card Footer */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          paddingTop: '0.85rem',
-                          borderTop: '1px solid var(--border-secondary)',
-                          fontSize: '0.8rem',
-                          color: 'var(--text-muted)',
-                        }}
-                      >
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1.5px dashed var(--border-secondary)', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'var(--font-hand)', fontWeight: 700 }}>
                           <Users size={13} /> {lead?.name || 'Student Team'}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                           <Calendar size={13} /> {new Date(project.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                         </span>
                       </div>
@@ -253,39 +190,64 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Faculty / Teacher CTA ────────────────────────────────────── */}
-      <section style={{ padding: '2rem 0 5rem' }}>
-        <div className="container" style={{ maxWidth: 860 }}>
+      {/* ── Feature row ───────────────────────────────────────────────────────── */}
+      <section style={{ padding: '1rem 0 3rem' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '1.5rem' }}>
+            {[
+              { icon: Lightbulb, title: 'Real College Projects', text: 'Built by students, for students.' },
+              { icon: Github, title: 'Open Source', text: 'Explore code, learn and contribute.' },
+              { icon: Users, title: 'Student Community', text: 'Share, get feedback and grow together.' },
+            ].map(({ icon: Icon, title, text }) => (
+              <div key={title} style={{ display: 'flex', gap: '0.85rem', alignItems: 'flex-start' }}>
+                <div style={{ flexShrink: 0, width: 46, height: 46, border: '2px solid var(--ink)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--highlight-soft)' }}>
+                  <Icon size={22} color="var(--ink)" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.15rem', color: 'var(--text-primary)' }}>{title}</h3>
+                  <p style={{ fontFamily: 'var(--font-hand)', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Faculty CTA ───────────────────────────────────────────────────────── */}
+      <section style={{ padding: '0 0 5rem' }}>
+        <div className="container" style={{ maxWidth: 920 }}>
           <div
             style={{
-              background: '#ffffff',
-              border: '1px solid var(--border-secondary)',
+              background: 'var(--bg-card)',
+              border: '2px solid var(--ink)',
               borderRadius: 'var(--radius-lg)',
               padding: '2.5rem',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: 'var(--shadow-lg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '2rem',
               flexWrap: 'wrap',
+              position: 'relative',
             }}
           >
+            <div className="tape" style={{ top: -12, left: '46%' }} />
             <div style={{ flex: '1 1 360px' }}>
               <span className="tag tag-accent" style={{ marginBottom: '0.75rem' }}>
-                Faculty Portal
+                <Rocket size={13} /> Faculty Portal
               </span>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-                Publish and Manage Student Work
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 700, margin: '0.5rem 0', color: 'var(--text-primary)' }}>
+                Your next big project might be here…
               </h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-                Faculty advisors can easily import projects via Excel or submit individual submissions with repository links, demos, and verified team rosters.
+              <p style={{ fontFamily: 'var(--font-hand)', color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.5 }}>
+                Faculty advisors can import projects via Excel or submit individual entries with repository links, demos and verified team rosters.
               </p>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               <Link href="/auth/register" className="btn btn-primary">
                 Register as Faculty
               </Link>
-              <Link href="/auth/login" className="btn btn-secondary">
+              <Link href="/auth/login" className="btn btn-accent">
                 Faculty Login
               </Link>
             </div>

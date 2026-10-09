@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Search, LayoutDashboard, LogIn, LogOut, Plus, Menu, X, Info, GitFork, Star } from 'lucide-react';
+import { Search, LayoutDashboard, LogIn, LogOut, Plus, Menu, X, Info, Star } from 'lucide-react';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -30,8 +30,8 @@ export default function Navbar() {
             style={{ objectFit: 'contain', height: 38, width: 'auto' }}
             priority
           />
-          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', borderLeft: '1px solid var(--border-secondary)', paddingLeft: '0.75rem', display: 'none' }} className="brand-subtitle">
-            Project Hub
+          <span style={{ fontFamily: 'var(--font-hand)', fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', borderLeft: '2px solid var(--border-secondary)', paddingLeft: '0.75rem', display: 'none' }} className="brand-subtitle">
+            ProjectHub
           </span>
         </Link>
 

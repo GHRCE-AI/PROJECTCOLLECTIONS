@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Github, Users, Calendar, ArrowRight, Video } from 'lucide-react';
+import { safeHttpUrl } from '@/lib/url';
 
 interface Member {
   name: string;
@@ -29,6 +30,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const shortAbstract = project.abstract?.length > 150
     ? project.abstract.slice(0, 150) + '...'
     : project.abstract;
+  const safeGithub = safeHttpUrl(project.githubUrl);
 
   return (
     <div className="project-card">
@@ -44,9 +46,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           )}
         </div>
 
-        {project.githubUrl && (
+        {safeGithub && (
           <a
-            href={project.githubUrl}
+            href={safeGithub}
             target="_blank"
             rel="noopener noreferrer"
             title="View GitHub Repository"

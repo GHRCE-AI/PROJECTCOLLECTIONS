@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isHttpUrlOrEmpty } from '@/lib/url';
 
 // ─── Auth Schemas ─────────────────────────────────────────────────────────────
 
@@ -63,6 +64,9 @@ export const projectSchema = z.object({
     .regex(/^https?:\/\/(www\.)?github\.com\/.+/, 'Must be a valid GitHub repository URL'),
   youtubeUrl: z
     .string()
+    .trim()
+    .max(300, 'YouTube URL is too long')
+    .refine(isHttpUrlOrEmpty, 'Video URL must start with http:// or https://')
     .optional()
     .or(z.literal(''))
     .transform((v) => v ?? ''),

@@ -71,7 +71,9 @@ export async function GET(request: NextRequest) {
     const baseFilter: Record<string, unknown> = {};
 
     if (batch) {
-      baseFilter.batchName = { $regex: batch, $options: 'i' };
+      // Escape regex metacharacters so user input can't inject a costly pattern.
+      const escapedBatch = batch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      baseFilter.batchName = { $regex: escapedBatch, $options: 'i' };
     }
 
     if (tags) {
