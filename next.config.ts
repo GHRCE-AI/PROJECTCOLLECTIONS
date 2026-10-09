@@ -27,6 +27,9 @@ const nextConfig: NextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
           },
+          // Cross-origin isolation / resource policy
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
           // Content Security Policy
           {
             key: 'Content-Security-Policy',
@@ -39,6 +42,12 @@ const nextConfig: NextConfig = {
               "connect-src 'self' https://registry.npmjs.org",
               "frame-src 'self' https://www.youtube.com https://youtube.com",
               "media-src 'self' https://www.youtube.com",
+              // Lock down injection / clickjacking vectors.
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              'upgrade-insecure-requests',
             ].join('; '),
           },
         ],

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isGithubUrl, isHttpUrlOrEmpty } from '@/lib/url';
 
 // ─── Relaxed Member Schema for Bulk Import ────────────────────────────────────
 
@@ -34,10 +35,14 @@ export const bulkProjectSchema = z.object({
     .max(10000, 'Abstract cannot exceed 10000 characters'),
   githubUrl: z
     .string()
-    .url('GitHub URL must be a valid URL')
+    .trim()
+    .refine(isGithubUrl, 'GitHub URL must be a valid github.com URL')
     .default('https://github.com/pending-upload'),
   youtubeUrl: z
     .string()
+    .trim()
+    .max(300, 'YouTube URL is too long')
+    .refine(isHttpUrlOrEmpty, 'Video URL must start with http:// or https://')
     .optional()
     .or(z.literal(''))
     .transform((v) => v ?? ''),

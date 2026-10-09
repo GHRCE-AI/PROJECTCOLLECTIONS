@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import dbConnect from '@/lib/mongoose/mongoose';
 import User from '@/models/User';
 import { registerSchema } from '@/lib/validations/validations';
+import { verifyCaptcha } from '@/lib/captcha';
 
 // Rate limiting store (simple in-memory; use Redis in production)
 const attemptMap = new Map<string, { count: number; resetAt: number }>();
@@ -53,6 +54,15 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+
+    // Server-side captcha verification (defence-in-depth over the browser widget).
+    if (!verifyCaptcha(body?.captchaAnswer, body?.captchaToken)) {
+      return NextResponse.json(
+        { error: 'Captcha verification failed. Please try again.' },
+        { status: 400 }
+      );
+    }
+
     const parsed = registerSchema.safeParse(body);
 
     if (!parsed.success) {
